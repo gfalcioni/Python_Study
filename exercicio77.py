@@ -19,6 +19,7 @@ perguntas = [
     },
 ]
 
+qtaAcertos = 0
 
 for item in perguntas:
     print(item['Pergunta'])
@@ -29,14 +30,16 @@ for item in perguntas:
 
     #Logica que o professor fez
     for i, opcao in enumerate(item['Opções']):
-        print(f"{i})", opcao)
+        print(f"{i+1})", opcao)
 
     try:
         resposta = input("Escolha uma opção: ")
         convertido = int(resposta)-1
 
+
         
         if item['Opções'][int(convertido)] == item['Resposta']:
+            qtaAcertos += 1
             print("Acertou!👍 ")
             print()
 
@@ -50,4 +53,7 @@ for item in perguntas:
     except IndexError:
         print("Opção inválida, escolha um dos itens da lista 🧐")
 
-
+if qtaAcertos >= 1:
+    print(f"Você acertou {qtaAcertos} de {len(perguntas)} perguntas! 👏")
+else:
+    print("Que pena, você não acertou nenhuma... 🥺")
