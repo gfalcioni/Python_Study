@@ -1,59 +1,65 @@
-perguntas = [
-    {
-        'Pergunta': "Quantos é 2+2?",
-        'Opções': ['1','3','4','5'],
-        'Resposta': '4',
-    },
+retorno = True
 
-    {
-        'Pergunta': 'Quantos é 5x5?',
-        'Opções': ['25','55','10','51'],
-        'Resposta': '25',
-    },
+while retorno:
 
-    {
-        'Pergunta': 'Quantos é 10/2?',
-        'Opções': ['4','5','2','1'],
-        'Resposta': '5',
+    somaDoCPF = 0
+    contagemSomaCPF = 10
+    resultadoFinal = 0
 
-    },
-]
+    cpfInput = input("\nOlá, bem-vindo. \nInsira o CPF para validação: ")
 
-qtaAcertos = 0
+    #tratamento do cpf
+    if len(cpfInput) <= 11: 
+        try:
+            cpfTratado = cpfInput.replace('-','').replace('.','')
 
-for item in perguntas:
-    print(item['Pergunta'])
+            noveDigitos = cpfTratado[:9]
 
-    #Opção que eu fiz sem consultar
-    # for opcoes in enumerate(item['Opções'],start=1):
-    #     print(f"{opcoes[0]}) {opcoes[1]}")
+            for numero in noveDigitos:
+                somaDoCPF += int(numero) * (contagemSomaCPF)
+                contagemSomaCPF -= 1
+            
+            resultadoPenultimoDigito = (somaDoCPF*10) % 11
 
-    #Logica que o professor fez
-    for i, opcao in enumerate(item['Opções']):
-        print(f"{i+1})", opcao)
+            if resultadoPenultimoDigito <= 9:
+                print(f"\nO penultimo digito do seu CPF é {resultadoPenultimoDigito}")
+            else:
+                print("\nO penultimo número do seu cpf é 0")
+                resultadoPenultimoDigito = 0
 
-    try:
-        resposta = input("Escolha uma opção: ")
-        convertido = int(resposta)-1
+            somaDoCPF = 0
+            contagemSomaCPF = 11
+
+            dezDigitos = cpfTratado[:10]
+
+            for numero in dezDigitos:
+                somaDoCPF += int(numero) * (contagemSomaCPF)
+                contagemSomaCPF -= 1
+            
+            resultadoUltimoDigito = (somaDoCPF*10) % 11
+
+            if resultadoUltimoDigito <= 9:
+                print(f"O ultimo digito do seu CPF é {resultadoUltimoDigito}")
+            else:
+                print("O ultimo número do seu cpf é 0")
+
+            validacaoFinal = str(resultadoPenultimoDigito)+str(resultadoUltimoDigito)
+
+            if validacaoFinal == cpfTratado[9:11]:
+                print("\nCPF válido! 🟢")
+
+            else:
+                print("\nCPF inválido! 🔴")
 
 
+            decisao = input("\nDeseja consultar outro CPF? ")
+
+            if decisao.upper() == 'NAO' or decisao.upper() == 'N':
+                retorno = False
+                
+
+        except ValueError:
+            print("Digite um CPF válido! ❌")
         
-        if item['Opções'][int(convertido)] == item['Resposta']:
-            qtaAcertos += 1
-            print("Acertou!👍 ")
-            print()
-
-        else:
-            print('Errou! ❌')
-            print()
-
-    except ValueError:
-        print("Digite um número 🕵️")
-
-    except IndexError:
-        print("Opção inválida, escolha um dos itens da lista 🧐")
-
-if qtaAcertos >= 1:
-    print(f"Você acertou {qtaAcertos} de {len(perguntas)} perguntas! 👏")
-else:
-    print("Que pena, você não acertou nenhuma... 🥺")
+    else:
+        print("\nO CPF contem mais de 11 digitos‼️")
